@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>termux下hexo博客搭建</title>
+    <url>/posts/4334a8aa.html</url>
+    <content><![CDATA[<p>本博客由hexo搭建，主题使用next，部署于github page，使用netlify加速访问。注意，以下所有内容均是在termux下完成</p>
+<h1 id="一、安装node及hexo"><a href="#一、安装node及hexo" class="headerlink" title="一、安装node及hexo"></a>一、安装node及hexo</h1><p>termux下已经可以直接安装node.js，运行hexo还需git，为方便编辑配置文件，安装vim</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">apt install nodejs-lts git vim</span><br></pre></td></tr></table></figure>
+
+<p>但有两种nodejs可供选择<br><img src="https://pic.imgdb.cn/item/6401d90ff144a01007bd2a40.png"></p>
+<p>那个vim是世界上最好的编辑器（至少我在termux上是这样认为的），vim编辑markdown文件的时候，会自动高亮，加粗啊，删除线啊，都能直接显示出来，这一点有点像Typora。当然我在电脑上就会直接用vscode嘛，vscode上markdown的显示真的和vim好像好像，会不会有人vim还不会用呢？如果不会，在这里我会简单说一下vim的简单用法：</p>
+<p>进入vim后，你是什么都编辑不了的，我指的是往上打字，而不是真的不能做别的事情。然后你需要点击键盘上的<code>i</code>，之后你会最下方看到<code>-- INSERT --</code>，然后就可以开始正常编辑，编辑完成之后，先点击<code>ESC</code>，之后在<strong>英文键盘</strong>上输入<code>:wq</code>以保存；如果你想不保存，直接退出，只需要先点击<code>ESC</code>，之后在<strong>英文键盘</strong>上输入<code>:q!</code>以不保存退出。这就是基础，极其基础的知识。</p>
+<p>题外话：在termux安装软件包时，强烈建议先更换安装源，而且现在termux支持命令更换，直接出来GUI版本</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">termux-change-repo</span><br></pre></td></tr></table></figure>
+<p><img src="https://pic.imgdb.cn/item/6401d936f144a01007bd6018.png"></p>
+<p><img src="https://pic.imgdb.cn/item/6401d94ff144a01007bd82b5.jpg"></p>
+<p>非常方便，简单又快捷，不用手动修改sources.list</p>
+<p>在安装hexo前，也建议换源，除非你使用的是阿里云的服务器，我没换源都老快了，否则那个比黑洞还重的<code>node_modules</code>能下载到怀疑人生。</p>
+<p>现在都2023年了，源淘宝npm源早就不是原来的域名了，就现在去网上查都能查到一堆还用原来域名的，还需注意一点，千万不要使用cnpm，否则……下载一时爽，运行两行泪……</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm config <span class="built_in">set</span> registry https://registry.npmmirror.com/ </span><br></pre></td></tr></table></figure>
+
+<p>检验一下</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm config get registry</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://pic.imgdb.cn/item/6401d9e7f144a01007be500a.jpg"></p>
+<p>安装hexo</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">npm install hexo -g</span><br></pre></td></tr></table></figure>
+
+<p>现在，在你喜欢的位置</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">mkdir blog   #名字随意</span><br><span class="line">cd blog</span><br><span class="line">hexo init .</span><br></pre></td></tr></table></figure>
+
+<p>出现这个就说明你成功了</p>
+<p><img src="https://pic.imgdb.cn/item/6401da26f144a01007bec71b.jpg"></p>
+<h1 id="二、配置next"><a href="#二、配置next" class="headerlink" title="二、配置next"></a>二、配置next</h1><p>这个next也有很大的坑，因为在github上能看见三个极其相似的仓库，但版本不同。</p>
+<p>这就是next官方文档的说明：</p>
+<p><img src="https://pic.imgdb.cn/item/63f190d2f144a01007389b9b.png"></p>
+<p>“由于历史原因”</p>
+<p>一定要使用新版，因为旧版会有一些不兼容的问题，比如说，去安装waline这个评论的时候会报错</p>
+<p><img src="https://pic.imgdb.cn/item/63f18ea8f144a01007356cbe.png"></p>
+<p>一定要选择那个前面带花的那个！！！</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/next-theme/hexo-theme-next themes/next</span><br></pre></td></tr></table></figure>
+
+<h1 id="进行站点配置及主题配置"><a href="#进行站点配置及主题配置" class="headerlink" title="进行站点配置及主题配置"></a>进行站点配置及主题配置</h1><p>从这里开始，我们将博客根目录定义为<code>$ROOT</code>这个变量，实际上是方便我书写，将<code>$ROOT/_config.yml</code>说为站点配置文件，<code>$ROOT/themes/next/_config.yml</code>说为主题配置文件。</p>
+<h2 id="站点配置"><a href="#站点配置" class="headerlink" title="站点配置"></a>站点配置</h2><p>编辑站点配置文件：按照你自己的喜好配置</p>
+<p><img src="https://pic.imgdb.cn/item/6401dd45f144a01007c58ea1.png"></p>
+<p><img src="https://pic.imgdb.cn/item/6401dd45f144a01007c58e8a.png"></p>
+<p>第二个图是将next主题配置到站点上，否则就是那个奇丑无比的默认主题</p>
+<p>其余的各种配置就太多了，应该，都能看懂吧……</p>
+<h2 id="主题配置"><a href="#主题配置" class="headerlink" title="主题配置"></a>主题配置</h2><p>编辑主题配置文件：同样按照你自己的喜好配置</p>
+<p>这里的配置内容实在太多，所以就不把我的配置一一列举，只说一些比较重要的部分，然后在后面说配置插件的时候还会继续配置。</p>
+<p>配置主题：</p>
+<p>这里是next官网上的demo：<a href="https://theme-next.js.org/muse/">Muse</a>，<a href="https://theme-next.js.org/mist/">Mist</a>，<a href="https://theme-next.js.org/pisces/">Pisces</a>，<a href="https://theme-next.js.org/">Gemini</a></p>
+<p>我选择的是Gemini，事实上官网默认主题就是Gemini……</p>
+<p><img src="https://pic.imgdb.cn/item/6402969ff144a01007cafa8f.jpg"></p>
+<p>配置目录：</p>
+<p><img src="https://pic.imgdb.cn/item/6402963ff144a01007ca8ae0.jpg"></p>
+<p>配置文章协议：</p>
+<p><img src="https://pic.imgdb.cn/item/64029670f144a01007cac4f8.jpg"></p>
+<p>配置sidebar头像：不建议把底下那两个false改成true，你可以试试，会很傻，至少我这样认为</p>
+<p><img src="https://pic.imgdb.cn/item/640297eaf144a01007cc7886.jpg"></p>
+<p>配置动画：强烈建议不使用动画，会拖慢网站加载速度</p>
+<p><img src="https://pic.imgdb.cn/item/6402985cf144a01007cd48b3.png"></p>
+<p>配置百度相关：百度统计和百度站长</p>
+<p>我这里没有打码，就是因为你们一打开审查元素一下就能看见我的百度统计代码，再说了，这玩意是免费的，应该不会有人用别人的代码吧，再说，那样也看不到统计结果啊。</p>
+<p>还有那个百度站长，是有一个验证网站的，也可以使用文件验证，但注意下载下来的文件名是否一致，在next可以直接配置标签验证。</p>
+<p><img src="https://pic.imgdb.cn/item/640298d8f144a01007ce08f4.png"></p>
+<p><img src="https://pic.imgdb.cn/item/640298d8f144a01007ce091c.png"></p>
+<h1 id="写博客"><a href="#写博客" class="headerlink" title="写博客"></a>写博客</h1><p>说了一堆废话，最重要的内容还没写。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> <span class="variable">$ROOT</span></span><br><span class="line">hexo new <span class="string">&quot;文章标题&quot;</span></span><br><span class="line"><span class="built_in">cd</span> <span class="built_in">source</span>/_posts</span><br><span class="line">vim 文章标题.md</span><br></pre></td></tr></table></figure>
+
+<p>然后你就开始写作吧</p>
+<p>在文章开头部分你会看到这样的一部分：</p>
+<p><img src="https://pic.imgdb.cn/item/64029beff144a01007d20703.png"></p>
+<p>那个abbrlink先不用管，一会说插件的时候会说到</p>
+<p>tags就是标签，categories就是分类，就按照我这样填上就行</p>
+<h1 id="创建标签，分类和关于界面"><a href="#创建标签，分类和关于界面" class="headerlink" title="创建标签，分类和关于界面"></a>创建标签，分类和关于界面</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo new page tags</span><br><span class="line">hexo new page categories</span><br><span class="line">hexo new page about</span><br></pre></td></tr></table></figure>
+
+<p>之后来到<code>$ROOT/source/</code>，会看到新建了几个目录，分别进入tags，categories，about这几个目录，编辑<code>index.md</code>，如about</p>
+<p><em>about&#x2F;index.md</em></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">---</span><br><span class="line">title: about</span><br><span class="line">date: 2023-03-03 16:54:20  # 此处不用修改，自带的</span><br><span class="line">type: about</span><br><span class="line">---</span><br><span class="line"></span><br><span class="line">下面就是你的关于内容</span><br></pre></td></tr></table></figure>
+
+<p>其余的就把type加上就行</p>
+<h1 id="编译，本地预览及上传"><a href="#编译，本地预览及上传" class="headerlink" title="编译，本地预览及上传"></a>编译，本地预览及上传</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo g  <span class="comment"># 编译输出各种静态文件</span></span><br><span class="line">hexo s  <span class="comment"># 本地预览，去浏览器打开http://localhost:4000</span></span><br></pre></td></tr></table></figure>
+
+<p>关于deploy，你可以像我一样使用GitHub，也可以使用别的</p>
+<p>如果是GitHub，那就需要一个仓库，如果你想就使用GitHub Page的话，则仓库名必须为<code>&lt;用户名&gt;.github.io</code>，并且为公有；如果你想像我一样使用vercel进行加速，则仓库名随意，最好为私有，否则别人是可以用搜索功能搜索到你的仓库。</p>
+<p>然后就是最好整一个免密登录，否则每一回都让你输入一下又臭又长的GitHub Token的时候你会疯掉的。</p>
+<p>关于ssh key，GitHub上有极其明确的说明，这里就不再赘述</p>
+<p><a href="https://docs.github.com/zh/authentication/connecting-to-github-with-ssh">https://docs.github.com/zh/authentication/connecting-to-github-with-ssh</a></p>
+<p>然后编辑站点配置文件，在最下面，如图配置：</p>
+<p><img src="https://pic.imgdb.cn/item/6402a222f144a01007dc27dd.png"></p>
+<p>换成你自己的仓库即可</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git config --global user.name <span class="string">&quot;用户名&quot;</span></span><br><span class="line">git config --global user.email <span class="string">&quot;电子邮件&quot;</span></span><br><span class="line">npm install hexo-deployer-git --save</span><br><span class="line">hexo g</span><br><span class="line">hexo d</span><br></pre></td></tr></table></figure>
+
+<p>电子邮件：<a href="https://github.com/settings/emails">https://github.com/settings/emails</a></p>
+<p>复制此处的电子邮件：就是一串数字+用户名@users.noreply.github.com</p>
+<p><img src="https://pic.imgdb.cn/item/64030f70f144a010078d1edc.jpg"></p>
+<p>至于你是想用vercel，netlify还是GitHub Page，网上有很多人都进行了评测，就看你是什么需求</p>
+<h1 id="hexo的一些优秀插件"><a href="#hexo的一些优秀插件" class="headerlink" title="hexo的一些优秀插件"></a>hexo的一些优秀插件</h1><h2 id="hexo-abbrlink"><a href="#hexo-abbrlink" class="headerlink" title="hexo-abbrlink"></a>hexo-abbrlink</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install hexo-abbrlink --save</span><br></pre></td></tr></table></figure>
+
+<p>这个插件非常优秀，可以将非常恶心的永久链接换成不带中文的链接</p>
+<p>直接按照GitHub上的配置就好：<a href="https://github.com/rozbo/hexo-abbrlink">https://github.com/rozbo/hexo-abbrlink</a></p>
+<p>但值得注意的是，你直接运行大概率会报错，你需要如下进行</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo g</span><br></pre></td></tr></table></figure>
+
+<p>这样就不会出现问题</p>
+<h2 id="hexo-word-counter"><a href="#hexo-word-counter" class="headerlink" title="hexo-word-counter"></a>hexo-word-counter</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install hexo-word-counter --save</span><br><span class="line">wget -N https://blog.techwang.top/index.node -o ./node_modules/hexo-word-counter/index.node</span><br></pre></td></tr></table></figure>
+
+<p>这个插件在termux下直接安装肯定报错，因为需要下载一个叫<code>index.node</code>的文件，而这个文件还没有termux上可以使用的arm版本，所以需要安装rust来对源码进行编译安装。这里是我安装的日志：</p>
+<p><img src="https://pic.imgdb.cn/item/6402e43ef144a0100743f553.jpg"></p>
+<p>花了我4分钟……这还不包括安装rust的时间……</p>
+<p>如果你无视报错信息，直接运行肯定报错，如果你不想安装rust，那么可以考虑直接下载我提供的<code>index.node</code>也可以，下载链接：<a href="https://blog.techwang.top/index.node">https://blog.techwang.top/index.node</a></p>
+<p>然后把<code>index.node</code>复制到<code>$ROOT/node_modules/hexo-word-counter</code>下就可以了</p>
+<h2 id="hexo-generator-searchdb"><a href="#hexo-generator-searchdb" class="headerlink" title="hexo-generator-searchdb"></a>hexo-generator-searchdb</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install hexo-generator-searchdb</span><br></pre></td></tr></table></figure>
+
+<p>编辑主题配置文件</p>
+<p><img src="https://pic.imgdb.cn/item/6403451ef144a01007e53d0a.png"></p>
+<h1 id="评论系统：waline"><a href="#评论系统：waline" class="headerlink" title="评论系统：waline"></a>评论系统：waline</h1><p>waline是valine的升级版，解决了安全问题</p>
+<p>但是，next原生不支持waline，但是我们可以曲线救国，即安装一个waline插件</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install @waline/hexo-next --save</span><br></pre></td></tr></table></figure>
+
+<p>这里使用vercel+leancloud国际版进行配置</p>
+<p>优点：免费，无需备案</p>
+<p>缺点：速度较慢，肯定没有国内的服务器快</p>
+<p>这里直接给出官网链接：<a href="https://waline.js.org/guide/get-started/">https://waline.js.org/guide/get-started/</a></p>
+<p>官网上说的非常清楚，但是一定要在vercel上绑定自定义域名，他说是可选，实则是必须，因为<code>*.vercel.app</code>被墙</p>
+<p>在next上的配置是这样的：</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Waline Config File</span></span><br><span class="line"><span class="comment"># For more information:</span></span><br><span class="line"><span class="comment"># - https://waline.js.org</span></span><br><span class="line"><span class="comment"># - https://waline.js.org/reference/component.html</span></span><br><span class="line"><span class="attr">waline:</span></span><br><span class="line">  <span class="comment"># New! Whether enable this plugin</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># Waline server address url, you should set this to your own link</span></span><br><span class="line">  <span class="attr">serverURL:</span> <span class="string">换成你自己的</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># Waline library CDN url, you can set this to your preferred CDN</span></span><br><span class="line">  <span class="attr">libUrl:</span> <span class="string">https://unpkg.com/@waline/client@v2/dist/waline.js</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># Waline CSS styles CDN url, you can set this to your preferred CDN</span></span><br><span class="line">  <span class="attr">cssUrl:</span> <span class="string">https://unpkg.com/@waline/client@v2/dist/waline.css</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># Custom locales</span></span><br><span class="line">  <span class="comment"># locale:</span></span><br><span class="line">  <span class="comment">#   placeholder: Welcome to comment # Comment box placeholder</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># If false, comment count will only be displayed in post page, not in home page</span></span><br><span class="line">  <span class="attr">commentCount:</span> <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># Pageviews count, <span class="doctag">Note:</span> You should not enable both `waline.pageview` and `leancloud_visitors`.</span></span><br><span class="line">  <span class="attr">pageview:</span> <span class="literal">false</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># Custom emoji</span></span><br><span class="line">  <span class="comment"># emoji:</span></span><br><span class="line">  <span class="comment">#   - https://unpkg.com/@waline/emojis@1.0.1/weibo</span></span><br><span class="line">  <span class="comment">#   - https://unpkg.com/@waline/emojis@1.0.1/alus</span></span><br><span class="line">  <span class="comment">#   - https://unpkg.com/@waline/emojis@1.0.1/bilibili</span></span><br><span class="line">  <span class="comment">#   - https://unpkg.com/@waline/emojis@1.0.1/qq</span></span><br><span class="line">  <span class="comment">#   - https://unpkg.com/@waline/emojis@1.0.1/tieba</span></span><br><span class="line">  <span class="comment">#   - https://unpkg.com/@waline/emojis@1.0.1/tw-emoji</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># Comment infomation, valid meta are nick, mail and link</span></span><br><span class="line">  <span class="attr">meta:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">nick</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">mail</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">link</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># Set required meta field, e.g.: [nick] | [nick, mail]</span></span><br><span class="line">  <span class="attr">requiredMeta:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">nick</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">mail</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># Language, available values: en-US, zh-CN, zh-TW, pt-BR, ru-RU, jp-JP</span></span><br><span class="line">  <span class="attr">lang:</span> <span class="string">zh-CN</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># Word limit, no limit when setting to 0</span></span><br><span class="line">  <span class="comment"># wordLimit: 0</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># Whether enable login, can choose from &#x27;enable&#x27;, &#x27;disable&#x27; and &#x27;force&#x27;</span></span><br><span class="line">  <span class="comment"># login: enable</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># comment per page</span></span><br><span class="line">  <span class="attr">pageSize:</span> <span class="number">10</span></span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Hexo</category>
+      </categories>
+      <tags>
+        <tag>博客搭建</tag>
+      </tags>
+  </entry>
+</search>
