@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="baidu-site-verification" content="codeva-1mZ4iHtTSC">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha256-/4UQcSmErDzPCMAiuOiWPVVsNN2s3ZY/NsmXNcj0IFc=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.techwang.top","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.15.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="前言由于要在termux下进行学习，在这里我列出一些linux基础命令。 基本ls系列 ls 列出本目录下所有文件，不包括以.开头的隐藏文件，白色表示普通文件，亮绿色表示可执行文件，亮红色表示压缩文件，蓝色表示目录，亮蓝色表示链接文件，其他的几乎不会看见。 la 列出本目录下所有文件，包括以.开头的隐藏文件。 ll 以列表形式列出本目录下所有文件，不包括以.开头的隐藏文件">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux基础命令">
+<meta property="og:url" content="https://blog.techwang.top/posts/4ac0a166.html">
+<meta property="og:site_name" content="TechWang2023的技术博客">
+<meta property="og:description" content="前言由于要在termux下进行学习，在这里我列出一些linux基础命令。 基本ls系列 ls 列出本目录下所有文件，不包括以.开头的隐藏文件，白色表示普通文件，亮绿色表示可执行文件，亮红色表示压缩文件，蓝色表示目录，亮蓝色表示链接文件，其他的几乎不会看见。 la 列出本目录下所有文件，包括以.开头的隐藏文件。 ll 以列表形式列出本目录下所有文件，不包括以.开头的隐藏文件">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://pic.imgdb.cn/item/64045886f144a0100765f345.png">
+<meta property="article:published_time" content="2023-03-05T08:48:59.000Z">
+<meta property="article:modified_time" content="2023-03-05T14:21:28.016Z">
+<meta property="article:author" content="TechWang2023">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="termux">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://pic.imgdb.cn/item/64045886f144a0100765f345.png">
+
+
+<link rel="canonical" href="https://blog.techwang.top/posts/4ac0a166.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.techwang.top/posts/4ac0a166.html","path":"posts/4ac0a166.html","title":"Linux基础命令"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Linux基础命令 | TechWang2023的技术博客</title>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?f6923c486776d6b26d72045858624f51"></script>
+
+
+
+
+
+
+<link rel="dns-prefetch" href="https://waline.techwang.top">
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">TechWang2023的技术博客</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">采菊东篱下，悠然见南山</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-sitemap"><a href="/baidusitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC"><span class="nav-number">2.</span> <span class="nav-text">基本</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#ls%E7%B3%BB%E5%88%97"><span class="nav-number">2.1.</span> <span class="nav-text">ls系列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E5%8F%8A%E7%9B%AE%E5%BD%95%E7%9B%B8%E5%85%B3"><span class="nav-number">2.2.</span> <span class="nav-text">文件及目录相关</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%93%BE%E6%8E%A5%EF%BC%9Aln"><span class="nav-number">2.3.</span> <span class="nav-text">链接：ln</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BD%AF%E8%BF%9E%E6%8E%A5%EF%BC%9A%E9%80%82%E7%94%A8%E4%BA%8E%E7%9B%AE%E5%BD%95%E5%92%8C%E6%96%87%E4%BB%B6%EF%BC%8C%E7%B1%BB%E4%BC%BC%E5%BF%AB%E6%8D%B7%E6%96%B9%E5%BC%8F"><span class="nav-number">2.3.1.</span> <span class="nav-text">软连接：适用于目录和文件，类似快捷方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A1%AC%E9%93%BE%E6%8E%A5%EF%BC%9A%E5%8F%AA%E9%80%82%E7%94%A8%E4%BA%8E%E6%96%87%E4%BB%B6%EF%BC%8C%E7%B1%BB%E4%BC%BC%E5%89%AF%E6%9C%AC"><span class="nav-number">2.3.2.</span> <span class="nav-text">硬链接：只适用于文件，类似副本</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9D%83%E9%99%90%EF%BC%9Achmod-chgrp-chown"><span class="nav-number">2.4.</span> <span class="nav-text">权限：chmod,chgrp,chown</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#chmod%EF%BC%9A%E4%BF%AE%E6%94%B9%E6%96%87%E4%BB%B6%E6%9D%83%E9%99%90"><span class="nav-number">2.4.1.</span> <span class="nav-text">chmod：修改文件权限</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E7%A7%8D%E6%98%AF%E7%AC%A6%E5%8F%B7%E6%A8%A1%E5%BC%8F%EF%BC%8C%E5%8F%AF%E4%BB%A5%E8%BF%99%E6%A0%B7%E8%AF%B4%EF%BC%9A"><span class="nav-number">2.4.1.1.</span> <span class="nav-text">第一种是符号模式，可以这样说：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E7%A7%8D%E6%98%AF%E5%85%AB%E8%BF%9B%E5%88%B6%EF%BC%8C%E5%8F%AF%E4%BB%A5%E8%BF%99%E6%A0%B7%E8%AF%B4%EF%BC%9A"><span class="nav-number">2.4.1.2.</span> <span class="nav-text">第二种是八进制，可以这样说：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#chgrp%EF%BC%9A%E4%BF%AE%E6%94%B9%E6%96%87%E4%BB%B6%E6%89%80%E6%9C%89%E7%BB%84"><span class="nav-number">2.4.2.</span> <span class="nav-text">chgrp：修改文件所有组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#chown%EF%BC%9A%E7%94%A8%E4%BA%8E%E8%AE%BE%E7%BD%AE%E6%96%87%E4%BB%B6%E6%89%80%E6%9C%89%E8%80%85%E5%92%8C%E6%96%87%E4%BB%B6%E5%85%B3%E8%81%94%E7%BB%84"><span class="nav-number">2.4.3.</span> <span class="nav-text">chown：用于设置文件所有者和文件关联组</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E5%8E%8B%E7%BC%A9%E4%B8%8E%E8%A7%A3%E5%8E%8B"><span class="nav-number">3.</span> <span class="nav-text">文件压缩与解压</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#tar-gz%E5%92%8C-tar-bz2%E7%9A%84%E5%8E%8B%E7%BC%A9%E5%92%8C%E8%A7%A3%E5%8E%8B"><span class="nav-number">3.1.</span> <span class="nav-text">*.tar.gz和*.tar.bz2的压缩和解压</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#zip%E7%9A%84%E5%8E%8B%E7%BC%A9%E5%92%8C%E8%A7%A3%E5%8E%8B"><span class="nav-number">3.2.</span> <span class="nav-text">.zip的压缩和解压</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#git"><span class="nav-number">4.</span> <span class="nav-text">git</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="TechWang2023"
+      src="https://gcore.jsdelivr.net/gh/techwang2023/blog-images@main/mmexport1667735295534.jpg">
+  <p class="site-author-name" itemprop="name">TechWang2023</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.techwang.top/posts/4ac0a166.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://gcore.jsdelivr.net/gh/techwang2023/blog-images@main/mmexport1667735295534.jpg">
+      <meta itemprop="name" content="TechWang2023">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="TechWang2023的技术博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Linux基础命令 | TechWang2023的技术博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Linux基础命令
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2023-03-05 16:48:59 / 修改时间：22:21:28" itemprop="dateCreated datePublished" datetime="2023-03-05T16:48:59+08:00">2023-03-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+        </span>
+    </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+    <span class="post-meta-item-icon">
+      <i class="far fa-comment"></i>
+    </span>
+    <span class="post-meta-item-text">Waline：</span>
+  
+    <a title="waline" href="/posts/4ac0a166.html#waline" itemprop="discussionUrl">
+      <span class="post-comments-count waline-comment-count" data-path="/posts/4ac0a166.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.2k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>4 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>由于要在termux下进行学习，在这里我列出一些linux基础命令。</p>
+<h1 id="基本"><a href="#基本" class="headerlink" title="基本"></a>基本</h1><h2 id="ls系列"><a href="#ls系列" class="headerlink" title="ls系列"></a>ls系列</h2><p><img src="https://pic.imgdb.cn/item/64045886f144a0100765f345.png"></p>
+<p><code>ls</code> 列出本目录下所有文件，不包括以<code>.</code>开头的隐藏文件，白色表示普通文件，亮绿色表示可执行文件，亮红色表示压缩文件，蓝色表示目录，亮蓝色表示链接文件，其他的几乎不会看见。</p>
+<p><code>la</code> 列出本目录下所有文件，包括以<code>.</code>开头的隐藏文件。</p>
+<p><code>ll</code> 以列表形式列出本目录下所有文件，不包括以<code>.</code>开头的隐藏文件</p>
+<span id="more"></span>
+
+<p>最左面，又有横杠又有字母的那一边，横杠加字母总共应该是10个字符，我们分成4个部分：为1-3-3-3</p>
+<p>“1”：表示文件类型，这个目录下类型比较少，只有目录和普通文件。可以看出，<code>-</code>表示普通文件，<code>d</code>表示目录，还可能看见<code>l</code>表示链接文件。</p>
+<p>第一个“3”：所有者权限，<code>r</code>表示可读，<code>w</code>表示可写，<code>x</code>表示可执行，<code>-</code>表示没有这个权限</p>
+<p>第二个“3”：组用户权限，意义同上</p>
+<p>第三个“3”：其他组用户权限，意义同上</p>
+<p>再往右看，是文件大小，目录不写，单位若没有则为字节</p>
+<p>再往右看，我这里是两列<code>u0_a165</code>，第一列是所有者，第二列是所有组</p>
+<p>再往右看，最后两列一起说，分别是最后修改时间，文件名&#x2F;目录名</p>
+<p><code>ll &lt;文件名&gt;</code> 看见的是单个文件的详细信息</p>
+<p><code>ls -ld</code> 看见的是当前目录的属性信息</p>
+<h2 id="文件及目录相关"><a href="#文件及目录相关" class="headerlink" title="文件及目录相关"></a>文件及目录相关</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> &lt;目录&gt;         <span class="comment"># 到另一个目录去，直接cd表示会家目录</span></span><br><span class="line"><span class="built_in">pwd</span>               <span class="comment"># 显示当前目录</span></span><br><span class="line"><span class="built_in">mkdir</span> &lt;目录&gt;      <span class="comment"># 新建目录</span></span><br><span class="line"><span class="built_in">touch</span> &lt;文件&gt;      <span class="comment"># 新建文件</span></span><br><span class="line"><span class="built_in">rm</span> &lt;文件&gt;         <span class="comment"># 删除文件</span></span><br><span class="line"><span class="built_in">rm</span> -rf &lt;目录&gt;     <span class="comment"># 删除目录</span></span><br><span class="line"><span class="built_in">cat</span> &lt;文件&gt;        <span class="comment"># 打印文件中的内容到shell</span></span><br><span class="line"><span class="built_in">mv</span> &lt;文件/目录&gt; &lt;目录&gt;  <span class="comment"># 把文件或目录移动到新目录</span></span><br><span class="line"><span class="built_in">cp</span> &lt;文件&gt; &lt;目录&gt;  <span class="comment"># 把文件复制到新目录</span></span><br><span class="line"><span class="built_in">cp</span> -r &lt;目录&gt; &lt;目录&gt;    <span class="comment"># 把整个目录复制到新目录</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="链接：ln"><a href="#链接：ln" class="headerlink" title="链接：ln"></a>链接：ln</h2><h3 id="软连接：适用于目录和文件，类似快捷方式"><a href="#软连接：适用于目录和文件，类似快捷方式" class="headerlink" title="软连接：适用于目录和文件，类似快捷方式"></a>软连接：适用于目录和文件，类似快捷方式</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">ln</span> -s &lt;源文件&gt; &lt;目标文件&gt;</span><br><span class="line"><span class="built_in">ln</span> -sv &lt;源目录&gt; &lt;目标目录&gt;  <span class="comment"># 使用绝对路径</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="硬链接：只适用于文件，类似副本"><a href="#硬链接：只适用于文件，类似副本" class="headerlink" title="硬链接：只适用于文件，类似副本"></a>硬链接：只适用于文件，类似副本</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">ln</span> &lt;源文件&gt; &lt;目标文件&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="权限：chmod-chgrp-chown"><a href="#权限：chmod-chgrp-chown" class="headerlink" title="权限：chmod,chgrp,chown"></a>权限：chmod,chgrp,chown</h2><p><code>-R</code>表示递归，即将该目录下所有文件和文件夹均进行处理</p>
+<h3 id="chmod：修改文件权限"><a href="#chmod：修改文件权限" class="headerlink" title="chmod：修改文件权限"></a>chmod：修改文件权限</h3><p>两种用法：</p>
+<h4 id="第一种是符号模式，可以这样说："><a href="#第一种是符号模式，可以这样说：" class="headerlink" title="第一种是符号模式，可以这样说："></a>第一种是符号模式，可以这样说：</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">chmod</span> &lt;用户类型1&gt;&lt;操作符1&gt;&lt;权限1&gt;,&lt;用户类型2&gt;&lt;操作符2&gt;&lt;权限2&gt;,&lt;用户类型3&gt;&lt;操作符3&gt;&lt;权限3&gt; &lt;文件&gt;</span><br></pre></td></tr></table></figure>
+
+<p>用户类型：还记得“1+3+3+3”吗，我们把第一组3说成u(<strong>U</strong>ser)，第二组3说成g(<strong>G</strong>roup)，第三组3说成o(<strong>O</strong>thers)，全体说成a(<strong>A</strong>ll)。这就是4个用户类型</p>
+<p>操作符：添加+，减少-，重新设置&#x3D;</p>
+<p>权限：读r，写w，执行x</p>
+<p>如<code>chmod u+x helloworld</code>表示使helloworld这个文件在所有者处可执行</p>
+<h4 id="第二种是八进制，可以这样说："><a href="#第二种是八进制，可以这样说：" class="headerlink" title="第二种是八进制，可以这样说："></a>第二种是八进制，可以这样说：</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">chmod</span> &lt;数1&gt;&lt;数2&gt;&lt;数3&gt; &lt;文件&gt;</span><br></pre></td></tr></table></figure>
+
+<p>其中，数1代表所有者权限，数2代表所有组权限，数3代表其他组权限</p>
+<p>数可以这样记：读表示4，写表示2，执行表示1，没有权限表示0。需要哪个或哪几个权限就把它们相加，成为三个数中的一个数。</p>
+<p>如<code>sudo chmod 777 helloworld</code>表示使helloworld这个文件在所有者，所以组和其他组中都具有rwx的权限</p>
+<h3 id="chgrp：修改文件所有组"><a href="#chgrp：修改文件所有组" class="headerlink" title="chgrp：修改文件所有组"></a>chgrp：修改文件所有组</h3><p>只要该用户属于所属组，就可以改变其所有组</p>
+<p>简单举例：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">chgrp</span> &lt;所属组&gt; &lt;文件&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="chown：用于设置文件所有者和文件关联组"><a href="#chown：用于设置文件所有者和文件关联组" class="headerlink" title="chown：用于设置文件所有者和文件关联组"></a>chown：用于设置文件所有者和文件关联组</h3><p>这个只有root用户可以使用</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">chown</span> &lt;所有者&gt; &lt;文件&gt;</span><br><span class="line"><span class="built_in">chown</span> &lt;所有者&gt;:&lt;所有组&gt; &lt;文件&gt;</span><br></pre></td></tr></table></figure>
+
+<h1 id="文件压缩与解压"><a href="#文件压缩与解压" class="headerlink" title="文件压缩与解压"></a>文件压缩与解压</h1><h2 id="tar-gz和-tar-bz2的压缩和解压"><a href="#tar-gz和-tar-bz2的压缩和解压" class="headerlink" title="*.tar.gz和*.tar.bz2的压缩和解压"></a>*.tar.gz和*.tar.bz2的压缩和解压</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">tar -zcvf &lt;压缩文件名&gt;.tar.gz &lt;要压缩的文件或目录&gt;   </span><br><span class="line">tar -zxvf &lt;压缩文件名&gt;.tar.gz -C &lt;解压目录&gt;</span><br><span class="line">tar -jcvf &lt;压缩文件名&gt;.tar.bz2 &lt;要压缩的文件或目录&gt;</span><br><span class="line">tar -jxvf &lt;压缩文件名&gt;.tar.bz2 -C &lt;解压目录&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="zip的压缩和解压"><a href="#zip的压缩和解压" class="headerlink" title=".zip的压缩和解压"></a>.zip的压缩和解压</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">zip &lt;压缩文件名&gt;.zip &lt;要压缩的文件&gt;</span><br><span class="line">zip -r &lt;要压缩的目录&gt;</span><br><span class="line">unzip &lt;压缩文件名&gt;.zip -d &lt;解压目录&gt;</span><br></pre></td></tr></table></figure>
+
+<h1 id="git"><a href="#git" class="headerlink" title="git"></a>git</h1><p>git的命令非常多，这里只说最简单的</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">git init        <span class="comment"># 新建一个仓库</span></span><br><span class="line">git remote add &lt;远程仓库地址&gt;</span><br><span class="line">git <span class="built_in">clone</span> &lt;远程仓库地址&gt;</span><br><span class="line">git add &lt;文件&gt;  <span class="comment"># 将文件添加至暂存区</span></span><br><span class="line">git status      <span class="comment"># 查看文件状态</span></span><br><span class="line">git commit -m <span class="string">&quot;commit&quot;</span></span><br><span class="line">git push</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>TechWang2023
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://blog.techwang.top/posts/4ac0a166.html" title="Linux基础命令">https://blog.techwang.top/posts/4ac0a166.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Linux/" rel="tag"><i class="fa fa-tag"></i> Linux</a>
+              <a href="/tags/termux/" rel="tag"><i class="fa fa-tag"></i> termux</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/4334a8aa.html" rel="prev" title="termux下hexo博客搭建">
+                  <i class="fa fa-chevron-left"></i> termux下hexo博客搭建
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="waline"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">TechWang2023</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">4k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">13 分钟</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+<script class="next-config" data-name="waline" type="application/json">{"lang":"zh-CN","enable":true,"serverURL":"https://waline.techwang.top","cssUrl":"https://unpkg.com/@waline/client@v2/dist/waline.css","commentCount":true,"pageview":false,"libUrl":"https://unpkg.com/@waline/client@v2/dist/waline.js","meta":["nick","mail","link"],"requiredMeta":["nick","mail"],"login":"enable","pageSize":10,"el":"#waline","comment":true,"path":"/posts/4ac0a166.html"}</script>
+<link rel="stylesheet" href="https://unpkg.com/@waline/client@v2/dist/waline.css">
+<script>
+document.addEventListener('page:loaded', () => {
+  NexT.utils.loadComments(CONFIG.waline.el).then(() =>
+    NexT.utils.getScript(CONFIG.waline.libUrl, { condition: window.Waline })
+  ).then(() => 
+    Waline.init(Object.assign({}, CONFIG.waline,{ el: document.querySelector(CONFIG.waline.el) }))
+  );
+});
+</script>
+
+</body>
+</html>
