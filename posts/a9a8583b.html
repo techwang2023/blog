@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="baidu-site-verification" content="codeva-1mZ4iHtTSC">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha256-/4UQcSmErDzPCMAiuOiWPVVsNN2s3ZY/NsmXNcj0IFc=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.techwang.top","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.15.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="前言本文将讲述域名及DNS的运行原理。 域名（Domain）是一种对于用户来说非常友好的方式来指向地址以访问网站。譬如说，当你在访问本网站时（blog.techwang.top），你只需要记住有blog，有techwang，还有top，并且在这三个单词之间各有一个.，而无需记住对于计算机来说非常友好的IP地址。 管理域名是指向哪个IP地址的系统，叫做DNS（the Domain Name Syst">
+<meta property="og:type" content="article">
+<meta property="og:title" content="域名相关">
+<meta property="og:url" content="https://blog.techwang.top/posts/a9a8583b.html">
+<meta property="og:site_name" content="TechWang2023的技术博客">
+<meta property="og:description" content="前言本文将讲述域名及DNS的运行原理。 域名（Domain）是一种对于用户来说非常友好的方式来指向地址以访问网站。譬如说，当你在访问本网站时（blog.techwang.top），你只需要记住有blog，有techwang，还有top，并且在这三个单词之间各有一个.，而无需记住对于计算机来说非常友好的IP地址。 管理域名是指向哪个IP地址的系统，叫做DNS（the Domain Name Syst">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://pic.imgdb.cn/item/64054a03f144a010079b6b1b.png">
+<meta property="article:published_time" content="2023-03-05T22:56:51.000Z">
+<meta property="article:modified_time" content="2023-03-06T02:42:55.906Z">
+<meta property="article:author" content="TechWang2023">
+<meta property="article:tag" content="Domain">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://pic.imgdb.cn/item/64054a03f144a010079b6b1b.png">
+
+
+<link rel="canonical" href="https://blog.techwang.top/posts/a9a8583b.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.techwang.top/posts/a9a8583b.html","path":"posts/a9a8583b.html","title":"域名相关"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>域名相关 | TechWang2023的技术博客</title>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?f6923c486776d6b26d72045858624f51"></script>
+
+
+
+
+
+
+<link rel="dns-prefetch" href="https://waline.techwang.top">
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">TechWang2023的技术博客</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">采菊东篱下，悠然见南山</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-sitemap"><a href="/baidusitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9F%9F%E5%90%8D%E8%A7%A3%E6%9E%90%E8%BF%87%E7%A8%8B"><span class="nav-number">2.</span> <span class="nav-text">域名解析过程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E6%AD%A5"><span class="nav-number">2.1.</span> <span class="nav-text">第一步</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E6%AD%A5"><span class="nav-number">2.2.</span> <span class="nav-text">第二步</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%B8%89%E6%AD%A5"><span class="nav-number">2.3.</span> <span class="nav-text">第三步</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E5%9B%9B%E6%AD%A5"><span class="nav-number">2.4.</span> <span class="nav-text">第四步</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%A1%B6%E7%BA%A7%E5%9F%9F%E5%92%8C%E5%AD%90%E5%9F%9F"><span class="nav-number">3.</span> <span class="nav-text">顶级域和子域</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#DNS%E8%AE%B0%E5%BD%95"><span class="nav-number">4.</span> <span class="nav-text">DNS记录</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#NS%E6%9C%8D%E5%8A%A1%E5%99%A8%EF%BC%9A%E5%90%8D%E7%A7%B0%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-number">5.</span> <span class="nav-text">NS服务器：名称服务器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SSL"><span class="nav-number">6.</span> <span class="nav-text">SSL</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="TechWang2023"
+      src="https://gcore.jsdelivr.net/gh/techwang2023/blog-images@main/mmexport1667735295534.jpg">
+  <p class="site-author-name" itemprop="name">TechWang2023</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.techwang.top/posts/a9a8583b.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://gcore.jsdelivr.net/gh/techwang2023/blog-images@main/mmexport1667735295534.jpg">
+      <meta itemprop="name" content="TechWang2023">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="TechWang2023的技术博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="域名相关 | TechWang2023的技术博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          域名相关
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2023-03-06 06:56:51 / 修改时间：10:42:55" itemprop="dateCreated datePublished" datetime="2023-03-06T06:56:51+08:00">2023-03-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Domain/" itemprop="url" rel="index"><span itemprop="name">Domain</span></a>
+        </span>
+    </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+    <span class="post-meta-item-icon">
+      <i class="far fa-comment"></i>
+    </span>
+    <span class="post-meta-item-text">Waline：</span>
+  
+    <a title="waline" href="/posts/a9a8583b.html#waline" itemprop="discussionUrl">
+      <span class="post-comments-count waline-comment-count" data-path="/posts/a9a8583b.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.6k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>6 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>本文将讲述域名及DNS的运行原理。</p>
+<p>域名（Domain）是一种对于用户来说非常友好的方式来指向地址以访问网站。譬如说，当你在访问本网站时（blog.techwang.top），你只需要记住有<code>blog</code>，有<code>techwang</code>，还有<code>top</code>，并且在这三个单词之间各有一个<code>.</code>，而无需记住对于计算机来说非常友好的IP地址。</p>
+<p>管理域名是指向哪个IP地址的系统，叫做DNS（the <strong>D</strong>omain <strong>N</strong>ame <strong>S</strong>ystem）。当我们去访问网站的时候，第一步就是把域名转化为IP地址，这个过程就叫DNS解析。</p>
+<span id="more"></span>
+
+<h1 id="域名解析过程"><a href="#域名解析过程" class="headerlink" title="域名解析过程"></a>域名解析过程</h1><h2 id="第一步"><a href="#第一步" class="headerlink" title="第一步"></a>第一步</h2><p>当你输入<code>blog.techwang.top</code>的时候，你的浏览器首先检查本地DNS缓存是否有IP地址指向<code>blog.techwang.top</code>。如果有，那就会向那个IP地址请求网页。</p>
+<h2 id="第二步"><a href="#第二步" class="headerlink" title="第二步"></a>第二步</h2><p>你的浏览器通过一个叫做递归DNS发起一个DNS查询。这个递归DNS通常由你的ISP或第三方提供。它充当了一个在用户浏览器和DNS服务器直接的中间人，通常用来提高解析速度和解析效率。它将会首先检查它的缓存看是否已经有了IP地址，如果没有，它将会向DNS服务器请求IP地址。</p>
+<h2 id="第三步"><a href="#第三步" class="headerlink" title="第三步"></a>第三步</h2><p>有一个DNS服务器的网络，并坐落于全球各地。递归DNS将会以以下方式进行查询：</p>
+<p>网络的入口是13个根服务器，分别为A-M，A为主根，其余为辅根。根服务器并非是13台物理服务器，而是有很多真正的服务器，它们通过任播Anycast技术使用同一IP地址，而且在其他地区的镜像同样使用Anycast。这些根服务器是最先被联系的。根据TLD（<strong>T</strong>op-<strong>L</strong>evel <strong>D</strong>omain），即顶级域名，如.cn，.top等，将会使递归DNS指向正确的TLD服务器。</p>
+<p>TLD名称服务器存储着它所属TLD的域名的信息。例如，当搜索blog.techwang.top的时候，一旦递归服务器收到了来自根服务器的回复，它将会查询.top的名称服务器。</p>
+<p>这个TLD服务器然后将回复递归服务器存储有 blog.techwang.top DNS记录的权威名称服务器。权威名称服务器返回这个记录到递归DNS，然后递归DNS又将结果返回给你的浏览器。</p>
+<h2 id="第四步"><a href="#第四步" class="headerlink" title="第四步"></a>第四步</h2><p>一旦你的浏览器获得了IP地址，它将会发起一个对IP地址所在服务器的HTTP请求。</p>
+<h1 id="顶级域和子域"><a href="#顶级域和子域" class="headerlink" title="顶级域和子域"></a>顶级域和子域</h1><p>顶级域名，例如techwang.top。如果你想使用顶级域名，那么建议你添加一个向www子域的重定向。这是因为www记录可以更好地控制你的域名。在顶级域名上做得任何事情通常也会作用于子域，相比而言，在www子域上就不会出现这种问题。</p>
+<p>子域是域名上更加特定的一部分，代表着子域网站下的功能。很显然，我的网站blog.techwang.top，子域就是blog，这就是一个博客。可能以后还会有image.techwang.top，这表示的就是图床等等。</p>
+<h1 id="DNS记录"><a href="#DNS记录" class="headerlink" title="DNS记录"></a>DNS记录</h1><p>有很多种DNS记录，如A记录，CNAME记录，AAAA记录，MX记录，NS记录，TXT记录等。</p>
+<p>这里来一个图，我的是用的cloudflare的域名解析，其他的应该都差不多。</p>
+<p>实际上本人不是很推荐使用cloudflare，因为相对于国内速度比较慢，但因为我是在百度智能云上买的域名，每次都要登录百度账号，而不能记住登录，非常讨厌。其二我也看中了cloudflare的抗造。</p>
+<p><img src="https://pic.imgdb.cn/item/64054a03f144a010079b6b1b.png"></p>
+<p>譬如说，这是一个A记录，它记录的对象是一个IPv4地址，啥是IPv4地址呢，就是例如192.168.1.1这样的地址，如果你使用服务器的话，请使用公网IP，你的私网IP是局域网IP，只有局域网中的成员才能访问。像192.168.1.1这样的地址它显然是局域网IP。这里简单说一下局域网IP段：</p>
+<p>10.0.0.0 - 10.255.255.255</p>
+<p>172.16.0.0 - 172.31.255.255</p>
+<p>192.168.0.0 - 192.168.255.255</p>
+<p>第二个叫名称，也就是子域</p>
+<p>第三个就是记录值，这里就是IPv4地址</p>
+<p>第四个有一个代理状态，默认是开，这个东西本质是个CDN（内容分发网络），就是可以使你的网站加速。但是如果你的用户绝大部分是中国大陆的话，建议把它关掉，因为如果你打开了，你的网站可能会减速。主要是因为cloudflare在国内没有节点，最近的是香港。但对于大部分人来说，应该速度还可以接受。</p>
+<p>最后一个是TTL（<strong>T</strong>ime <strong>T</strong>o <strong>L</strong>ive），即存活时间，递归DNS所存储DNS记录值缓存的时间。这个数字应该基于用户访问网站的频次和网站更新的频次，这里是有一个自动的选项的，如果不会选，就选自动。</p>
+<p>这里在说一下其他的记录</p>
+<p>AAAA记录：与A记录类似，这个记录的是IPv6地址</p>
+<p>CNAME记录：指子域指向另外一个域名</p>
+<p>NS记录：记录域名的NS服务器</p>
+<p>TXT记录：就是记录一串文本，通常用来验证域名</p>
+<h1 id="NS服务器：名称服务器"><a href="#NS服务器：名称服务器" class="headerlink" title="NS服务器：名称服务器"></a>NS服务器：名称服务器</h1><p>名称服务器是回复域名指向哪个IP地址的服务器，大多数都域名注册商都提供名称服务器，如cloudflare，我的就是：</p>
+<p>athena.ns.cloudflare.com</p>
+<p>leif.ns.cloudflare.com</p>
+<h1 id="SSL"><a href="#SSL" class="headerlink" title="SSL"></a>SSL</h1><p>大体上说就是加密，就是用户浏览器和服务器直接的数据传输是加密的，即使有人抓包，也不会看到实际内容。而这一过程需要SSL证书，这个证书是针对域名颁发的，而不是IP地址。</p>
+<p>颁发过程就是先找到一个证书颁发机构，输入你的域名，然后告诉你怎么验证这个域名是属于你的，有文件验证，CNAME记录验证，TXT记录验证等，选一个最适合你的。等证书颁发完以后，下载证书，安装至你的服务器，之后用HTTPS访问你的网站，应该就能在你的网址边上显示出一个小锁了。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>TechWang2023
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://blog.techwang.top/posts/a9a8583b.html" title="域名相关">https://blog.techwang.top/posts/a9a8583b.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Domain/" rel="tag"><i class="fa fa-tag"></i> Domain</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/4ac0a166.html" rel="prev" title="Linux基础命令">
+                  <i class="fa fa-chevron-left"></i> Linux基础命令
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="waline"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">TechWang2023</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">5k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">19 分钟</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+<script class="next-config" data-name="waline" type="application/json">{"lang":"zh-CN","enable":true,"serverURL":"https://waline.techwang.top","cssUrl":"https://unpkg.com/@waline/client@v2/dist/waline.css","commentCount":true,"pageview":false,"libUrl":"https://unpkg.com/@waline/client@v2/dist/waline.js","meta":["nick","mail","link"],"requiredMeta":["nick","mail"],"login":"enable","pageSize":10,"el":"#waline","comment":true,"path":"/posts/a9a8583b.html"}</script>
+<link rel="stylesheet" href="https://unpkg.com/@waline/client@v2/dist/waline.css">
+<script>
+document.addEventListener('page:loaded', () => {
+  NexT.utils.loadComments(CONFIG.waline.el).then(() =>
+    NexT.utils.getScript(CONFIG.waline.libUrl, { condition: window.Waline })
+  ).then(() => 
+    Waline.init(Object.assign({}, CONFIG.waline,{ el: document.querySelector(CONFIG.waline.el) }))
+  );
+});
+</script>
+
+</body>
+</html>
